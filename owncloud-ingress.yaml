@@ -1,0 +1,30 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "30"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "1200"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "800"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "owncloud-affinity"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha"
+  labels:
+    app.kubernetes.io/name: owncloud
+    app.kubernetes.io/part-of: owncloud
+  name: owncloud
+spec:
+#  tls:
+#  - hosts:
+#    - owncloud.example.com
+#  secretName: tls-owncloud
+  rules:
+  - host: owncloud.example.com
+    http:
+      paths:
+        - path: /
+          backend:
+            serviceName: owncloud
+            servicePort: 8080

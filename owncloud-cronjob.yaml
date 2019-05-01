@@ -1,0 +1,36 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  labels:
+    app.kubernetes.io/name: owncloud
+    app.kubernetes.io/part-of: owncloud
+  name: webcron
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "*/14 * * * *"
+  successfulJobsHistoryLimit: 1
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: webcron
+            image: byrnedo/alpine-curl:latest
+            args:
+            - -Ss
+            - --connect-timeout
+            - "5"
+            - --max-time
+            - "60"
+            - --retry
+            - "5"
+            - --retry-delay
+            - "5"
+            - --retry-max-time
+            - "60"
+            - -H
+            - 'Host: owncloud.example.com'
+            - http://owncloud:80/cron.php
+          restartPolicy: OnFailure

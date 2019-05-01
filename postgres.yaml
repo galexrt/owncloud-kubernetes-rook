@@ -1,0 +1,50 @@
+---
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name: owncloud-postgres
+  labels:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/part-of: owncloud
+spec:
+  teamId: "owncloud"
+  volume:
+    size: 25Gi
+  numberOfInstances: 2
+  users:
+    # Super user for full database access
+    root:
+    - superuser
+    - createdb
+    # Database user for owncloud
+    owncloud_user: []
+  enableMasterLoadBalancer: false
+  enableReplicaLoadBalancer: false
+  # Create a database which the owncloud_user can use
+  databases:
+    owncloud: owncloud_user
+  enableShmVolume: true
+  postgresql:
+    version: "9.6"
+    parameters:
+      shared_buffers: "32MB"
+      max_connections: "50"
+  resources:
+    requests:
+      cpu: 384m
+      memory: 100Mi
+    limits:
+      cpu: 512m
+      memory: 768Mi
+  patroni:
+    initdb:
+      encoding: "UTF8"
+      locale: "en_US.UTF-8"
+      data-checksums: "true"
+    pg_hba:
+    - hostssl all all 0.0.0.0/0 md5
+    - host    all all 0.0.0.0/0 md5
+    ttl: 30
+    loop_wait: &loop_wait 10
+    retry_timeout: 12
+    maximum_lag_on_failover: 33554432
