@@ -2,35 +2,44 @@
 apiVersion: kubedb.com/v1alpha1
 kind: Redis
 metadata:
-    labels:
-        app.kubernetes.io/name: redis
-        app.kubernetes.io/part-of: owncloud
-    name: redis-owncloud
+  labels:
+    app.kubernetes.io/name: redis
+    app.kubernetes.io/part-of: owncloud
+  name: redis-owncloud
+  namespace: atrost-live-proj-media
 spec:
-    version: "5.0.3-v1"
-    mode: Cluster
-    cluster:
-      master: 3
-      replicas: 1
-    storageType: Ephemeral
-    podTemplate:
-        spec:
-            nodeSelector:
-                beta.kubernetes.io/os: linux
-            resources:
-                requests:
-                    memory: "64Mi"
-                    cpu: "250m"
-                limits:
-                    memory: "128Mi"
-                    cpu: "500m"
-    serviceTemplate:
-        spec:
-            type: ClusterIP
-            ports:
-                - name: http
-                  port: 9200
-                  targetPort: http
-                  terminationPolicy: WipeOut
-    updateStrategy:
-        type: RollingUpdate
+  version: "5.0.3-v1"
+  mode: Cluster
+  cluster:
+    master: 3
+    replicas: 1
+  storageType: Ephemeral
+  monitor:
+    agent: prometheus.io/coreos-operator
+    prometheus:
+      namespace: monitoring
+      labels:
+        app: kubedb
+      interval: 10s
+  podTemplate:
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      resources:
+        requests:
+          memory: "64Mi"
+          cpu: "250m"
+        limits:
+          memory: "128Mi"
+          cpu: "500m"
+  serviceTemplate:
+    spec:
+      type: ClusterIP
+      ports:
+        - name: http
+          port: 9200
+          targetPort: http
+          terminationPolicy: WipeOut
+  updateStrategy:
+    type: RollingUpdate
+

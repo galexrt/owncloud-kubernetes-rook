@@ -6,11 +6,12 @@ metadata:
     app.kubernetes.io/name: owncloud
     app.kubernetes.io/part-of: owncloud
   name: webcron
+  namespace: atrost-live-proj-media
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/14 * * * *"
   successfulJobsHistoryLimit: 1
-  failedJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 2
   jobTemplate:
     spec:
       template:
@@ -18,6 +19,17 @@ spec:
           containers:
           - name: webcron
             image: byrnedo/alpine-curl:latest
+            env:
+            - name: HTTP_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: owncloud-config
+                  key: HTTP_PORT
+            - name: OWNCLOUD_DOMAIN
+              valueFrom:
+                configMapKeyRef:
+                  name: owncloud-config
+                  key: OWNCLOUD_DOMAIN
             args:
             - -Ss
             - --connect-timeout
@@ -31,6 +43,7 @@ spec:
             - --retry-max-time
             - "60"
             - -H
-            - 'Host: owncloud.example.com'
-            - http://owncloud:80/cron.php
+            - 'Host: $(OWNCLOUD_DOMAIN)'
+            - 'http://owncloud:$(HTTP_PORT)/cron.php'
           restartPolicy: OnFailure
+

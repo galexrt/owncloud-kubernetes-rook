@@ -1,6 +1,7 @@
 ---
 apiVersion: v1
 data:
+  HTTP_PORT: "8080"
   OWNCLOUD_DOMAIN: "owncloud.example.com"
   OWNCLOUD_DB_TYPE: pgsql
   OWNCLOUD_DB_NAME: owncloud
