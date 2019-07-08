@@ -42,7 +42,7 @@ spec:
           options:
             fsName: repl-2-1
             clusterNamespace: rook-ceph
-            path: "/atrost-live-proj-media/owncloud"
+            path: "/"
       containers:
       - image: owncloud/server:10.1.1-20190406
         imagePullPolicy: IfNotPresent

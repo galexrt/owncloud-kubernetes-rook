@@ -6,7 +6,6 @@ metadata:
     app.kubernetes.io/name: owncloud
     app.kubernetes.io/part-of: owncloud
   name: webcron
-  namespace: atrost-live-proj-media
 spec:
   concurrencyPolicy: Forbid
   schedule: "*/14 * * * *"
@@ -46,4 +45,3 @@ spec:
             - 'Host: $(OWNCLOUD_DOMAIN)'
             - 'http://owncloud:$(HTTP_PORT)/cron.php'
           restartPolicy: OnFailure
-
