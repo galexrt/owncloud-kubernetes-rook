@@ -40,11 +40,11 @@ spec:
           driver: rook.io/rook
           fsType: ceph
           options:
-            fsName: repl-2-1
+            fsName: myfs
             clusterNamespace: rook-ceph
-            path: "/"
+            #path: "/"
       containers:
-      - image: owncloud/server:10.1.1-20190406
+      - image: owncloud/server:10.2.1-20190705
         imagePullPolicy: IfNotPresent
         name: owncloud
         envFrom:

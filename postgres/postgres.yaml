@@ -9,7 +9,7 @@ metadata:
 spec:
   teamId: "owncloud"
   volume:
-    size: 25Gi
+    size: 10Gi
   numberOfInstances: 2
   users:
     # Super user for full database access
@@ -31,7 +31,7 @@ spec:
       max_connections: "50"
   resources:
     requests:
-      cpu: 384m
+      cpu: 128m
       memory: 100Mi
     limits:
       cpu: 512m

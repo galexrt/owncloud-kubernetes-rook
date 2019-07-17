@@ -13,13 +13,6 @@ spec:
     master: 3
     replicas: 1
   storageType: Ephemeral
-  monitor:
-    agent: prometheus.io/coreos-operator
-    prometheus:
-      namespace: monitoring
-      labels:
-        app: kubedb
-      interval: 10s
   podTemplate:
     spec:
       nodeSelector:
