@@ -14,7 +14,7 @@ metadata:
   namespace: rook-ceph
 spec:
   cephVersion:
-    image: ceph/ceph:v14.2.1-20190430
+    image: ceph/ceph:v14.2.2-20190722
     allowUnsupported: true
   # Default path is `/var/lib/rook`, changed to `/mnt/sda1/rook` for "compatibility" with minikube
   dataDirHostPath: /mnt/sda1/rook

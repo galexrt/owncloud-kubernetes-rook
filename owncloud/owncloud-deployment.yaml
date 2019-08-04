@@ -7,7 +7,9 @@ metadata:
     app.kubernetes.io/part-of: owncloud
   name: owncloud
 spec:
-  replicas: 2
+  # During installation and upgrade of ownCloud this MUST be set to `1`
+  # If set to something else than `1` during installation or upgrade, you may run into issues.
+  replicas: 1
   revisionHistoryLimit: 2
   selector:
     matchLabels:
@@ -44,8 +46,8 @@ spec:
             clusterNamespace: rook-ceph
             #path: "/"
       containers:
-      - image: owncloud/server:10.2.1-20190705
-        imagePullPolicy: IfNotPresent
+      - image: galexrt/owncloud-server:latest
+        imagePullPolicy: Always
         name: owncloud
         envFrom:
         - secretRef:
@@ -69,18 +71,20 @@ spec:
         volumeMounts:
         - name: owncloud-data
           mountPath: /mnt/data
-        readinessProbe:
-          initialDelaySeconds: 5
-          failureThreshold: 20
-          timeoutSeconds: 5
-          exec:
-            command:
-            - /usr/bin/healthcheck
-        livenessProbe:
-          exec:
-            command:
-            - /usr/bin/healthcheck
-          initialDelaySeconds: 30
-          timeoutSeconds: 3
-          successThreshold: 1
-          failureThreshold: 15
+# Only uncomment after the database installation has completed
+#
+#        readinessProbe:
+#          initialDelaySeconds: 10
+#          failureThreshold: 20
+#          timeoutSeconds: 5
+#          exec:
+#            command:
+#            - /usr/bin/healthcheck
+#        livenessProbe:
+#          exec:
+#            command:
+#            - /usr/bin/healthcheck
+#          initialDelaySeconds: 35
+#          timeoutSeconds: 3
+#          successThreshold: 1
+#          failureThreshold: 15

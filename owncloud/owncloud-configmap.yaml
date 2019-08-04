@@ -6,10 +6,11 @@ data:
   OWNCLOUD_DB_TYPE: pgsql
   OWNCLOUD_DB_NAME: owncloud
   OWNCLOUD_DB_HOST: owncloud-postgres
-  OWNCLOUD_ADMIN_USERNAME: "owncloudadmin"
+  OWNCLOUD_ADMIN_USERNAME: "myowncloudadmin"
   OWNCLOUD_REDIS_ENABLED: "true"
-  OWNCLOUD_REDIS_HOST: "redis-owncloud"
-  OWNCLOUD_SKIP_CHOWN: "true"
+  OWNCLOUD_REDIS_SEEDS: "redis-owncloud:6379"
+  OWNCLOUD_REDIS_FAILOVER_MODE: "FAILOVER_DISTRIBUTE"
+  OWNCLOUD_SKIP_CHOWN: "false"
   OWNCLOUD_BACKGROUND_MODE: "webcron"
 kind: ConfigMap
 metadata:
